@@ -28,7 +28,7 @@ app.post('/submit', (req, res) => {
       console.error('Write error:', err);
       return res.status(500).json({ error: 'Could not save submission' });
     }
-    console.log('Saved submission (raw):', entry);
+   console.log('Saved submission (raw): ' + JSON.stringify(entry));
     res.json({ success: true });
   });
 });
