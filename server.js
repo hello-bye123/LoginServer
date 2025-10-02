@@ -1,3 +1,14 @@
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+
+const app = express();
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Main submissions file
+const OUTFILE = path.join(__dirname, 'submissions.jsonl');
+
 app.post('/submit', (req, res) => { 
   const { username, password } = req.body || {};
   if (typeof username !== 'string' || typeof password !== 'string') {
@@ -22,10 +33,14 @@ app.post('/submit', (req, res) => {
   });
 });
 
-// Temporary view route for submissions
+// Temporary route to view submissions in browser
 app.get('/view-submissions', (req, res) => {
   fs.readFile('debug_submissions.txt', 'utf8', (err, data) => {
     if(err) return res.send('No submissions yet.');
     res.type('text').send(data.replace(/\n/g, '<br>'));
   });
 });
+
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
