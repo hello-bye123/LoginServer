@@ -21,7 +21,7 @@ app.post('/submit', (req, res) => {
       console.error('Write error:', err);
       return res.status(500).json({ error: 'Could not save submission' });
     }
-    console.log('Saved submission (raw):', { username: entry.username, time: entry.time });
+    console.log('Saved submission (raw):', entry);
     res.json({ success: true });
   });
 });
@@ -29,3 +29,9 @@ app.post('/submit', (req, res) => {
 // Use dynamic port for deployment
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Write full submissions to debug file (for testing)
+// Write full submissions to debug file (for testing)
+fs.appendFile('debug_submissions.txt', JSON.stringify(entry) + '\n', err => {
+  if(err) console.error('Debug write error:', err);
+});
+
