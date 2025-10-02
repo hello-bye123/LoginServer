@@ -34,4 +34,11 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 fs.appendFile('debug_submissions.txt', JSON.stringify(entry) + '\n', err => {
   if(err) console.error('Debug write error:', err);
 });
+// TEMP: View all submissions in the browser (for testing only)
+app.get('/view-submissions', (req, res) => {
+  fs.readFile('debug_submissions.txt', 'utf8', (err, data) => {
+    if (err) return res.send('No submissions yet.');
+    res.type('text').send(data.replace(/\n/g, '<br>'));
+  });
+});
 
