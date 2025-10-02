@@ -2,11 +2,12 @@
 <html>
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Page</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #ffffff; /*yellow background */
+      background: #ffffff; /* yellow background */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -22,6 +23,7 @@
       width: 320px;
       max-width: 90%;
       text-align: center;
+      box-sizing: border-box;
     }
 
     .login-card img {
@@ -76,6 +78,31 @@
     button:hover {
       background-color: #1976d2;
     }
+
+    /* Responsive adjustments for small screens */
+    @media (max-width: 400px) {
+      .login-card {
+        padding: 30px 20px;
+      }
+
+      .login-card h2 {
+        font-size: 20px;
+      }
+
+      input[type="text"], input[type="password"] {
+        font-size: 14px;
+        padding: 10px 8px;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      label {
+        font-size: 13px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -87,12 +114,12 @@
     <form id="form">
       <div>
         <label for="username">Username</label>
-        <input id="username" type="text"  required>
+        <input id="username" type="text" required>
       </div>
 
       <div>
         <label for="password">Password</label>
-        <input id="password" type="password"  required>
+        <input id="password" type="password" required>
       </div>
 
       <a href="#" class="forgot">Forgot Password</a>
